@@ -23,5 +23,8 @@ public class Producto {
     private Integer stockproducto;
     @Column(name = "marcaproducto")
     private String marcaproducto;
+    @Column(name = "imagenproducto")
+    private String imagenproducto;
+
 
 }
