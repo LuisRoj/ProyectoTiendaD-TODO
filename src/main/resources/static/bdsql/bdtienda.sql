@@ -4,16 +4,43 @@ CREATE DATABASE bdtienda;
 -- Seleccionar la base de datos
 USE bdtienda;
 
--- Crear la tabla Usuarios
-CREATE TABLE usuarios (
-    idusuario INT AUTO_INCREMENT PRIMARY KEY,
+-- Crear la tabla Rol
+CREATE TABLE rol (
+	idrol INT auto_increment NOT NULL,
+	nomrol varchar(300) NULL,
+	CONSTRAINT roles_pk PRIMARY KEY (idrol)
+);
+
+insert into rol (nomrol)values
+('ADMIN'),
+('USER');
+
+select * from rol;
+
+-- Crear la tabla Usuario
+CREATE TABLE usuario (
+    idusuario INT AUTO_INCREMENT not null,
     nomusuario VARCHAR(50),
     apeusuario VARCHAR(50),
     correousuario VARCHAR(100),
+    password varchar(300) NULL,
     tlfusuario VARCHAR(15),
-    dirusuario VARCHAR(255)
+    dirusuario VARCHAR(255),
+    activo BOOL NULL,
+    CONSTRAINT users_pk PRIMARY KEY (idusuario)
 );
-drop TABLE productos;
+
+select * from usuario;
+
+-- Crear la tabla Usuario_Rol
+CREATE TABLE usuario_rol (
+	idusuario INT NOT NULL,
+	idrol INT NOT NULL,
+	CONSTRAINT user_role_pk PRIMARY KEY (idusuario, idrol),
+	CONSTRAINT user_role_FK FOREIGN KEY (idusuario) REFERENCES bdtienda.usuario(idusuario),
+	CONSTRAINT user_role_FK_1 FOREIGN KEY (idrol) REFERENCES bdtienda.rol(idrol)
+);
+
 -- Crear la tabla Productos
 CREATE TABLE productos (
     idproducto INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,8 +84,8 @@ CREATE TABLE detalle_pedido (
 );
 SET SQL_SAFE_UPDATES = 1;
 
-select * from usuarios;
-INSERT INTO productos (nomidproducto, descproducto, precioproducto, stockproducto, marcaproducto, imagenproducto) VALUES 
+select * from productos;
+INSERT INTO productos (nomidproducto, descproducto, precioproducto, stockproducto, marcaproducto, imagenproducto) VALUES
 ('Arroz', 'Arroz extraído del Norte, de grano largo y fino.', 3.50, 100, 'Campo Norte', 'arroz.jpg'),
 ('Azúcar', 'Azúcar refinada de caña de azúcar cultivada en la costa peruana.', 2.80, 150, 'Vega', 'azucar.jpg'),
 ('Aceite Vegetal', 'Aceite vegetal prensado en frío, ideal para cocinar y freír.', 5.90, 80, 'Primor', 'aceite_vegetal.jpg'),
