@@ -46,14 +46,10 @@ public class LoginController {
     @GetMapping("/dashboard")
     public String dashboard(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        // Obtén el objeto UserDetails del contexto de seguridad
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // Convierte el UserDetails a tu clase Usuario
         UsuarioSecurity usuario = (UsuarioSecurity) userDetails;
-        // Ahora puedes acceder a los atributos específicos de tu clase Usuario
         String email = usuario.getEmail();
-        // Realiza cualquier otra operación que necesites con el objeto Usuario
         session.setAttribute("usuario", email);
-        return "auth/home"; // Return the dashboard page
+        return "auth/home";
     }
 }
