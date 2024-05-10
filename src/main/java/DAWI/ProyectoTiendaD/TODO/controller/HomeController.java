@@ -5,6 +5,7 @@ import DAWI.ProyectoTiendaD.TODO.model.bd.Pedido;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Producto;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Usuario;
 import DAWI.ProyectoTiendaD.TODO.service.IProductoService;
+import DAWI.ProyectoTiendaD.TODO.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class HomeController {
 
     @Autowired
     private IProductoService productoService;
+    @Autowired
+    private IUsuarioService usuarioService;
 
     List<DetallePedido> detalles=new ArrayList<DetallePedido>();
 
@@ -119,8 +122,10 @@ public class HomeController {
     @GetMapping("/pedido")
     public String order(Model model, HttpSession session) {
 
+        Usuario usuario =usuarioService.findById(4).get();
         model.addAttribute("cart", detalles);
         model.addAttribute("pedido", pedido);
+        model.addAttribute("usuario", usuario);
         return "usuario/resumenpedido";
     }
 }
