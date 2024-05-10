@@ -3,7 +3,9 @@ package DAWI.ProyectoTiendaD.TODO.controller;
 import DAWI.ProyectoTiendaD.TODO.model.bd.DetallePedido;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Pedido;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Producto;
+import DAWI.ProyectoTiendaD.TODO.model.bd.Usuario;
 import DAWI.ProyectoTiendaD.TODO.service.IProductoService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,13 @@ public class HomeController {
         detallePedido.setSubtotalpedido(producto.getPrecioproducto() * cantidad);
         detallePedido.setProducto(producto);
 
-        detalles.add(detallePedido);
+        //validar que le producto no se añada 2 veces
+        Integer idProducto=producto.getIdproducto();
+        boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getIdproducto()==idProducto);
+
+        if (!ingresado) {
+            detalles.add(detallePedido);
+        }
 
         sumaTotal=detalles.stream().mapToDouble(dt->dt.getSubtotalpedido()).sum();
         pedido.setTotal(sumaTotal);
@@ -68,6 +76,51 @@ public class HomeController {
         model.addAttribute("pedido", pedido);
 
 
+
         return "usuario/carrito";
+    }
+
+    // quitar un producto del carrito
+    @GetMapping("/delete/cart/{id}")
+    public String deleteProductoCart(@PathVariable Integer id, Model model) {
+
+        // lista nueva de prodcutos
+        List<DetallePedido> ordenesNueva = new ArrayList<DetallePedido>();
+
+        for (DetallePedido detallePedido : detalles) {
+            if (detallePedido.getProducto().getIdproducto()!= id) {
+                ordenesNueva.add(detallePedido);
+            }
+        }
+
+        // poner la nueva lista con los productos restantes
+        detalles = ordenesNueva;
+
+        double sumaTotal = 0;
+        sumaTotal=detalles.stream().mapToDouble(dt->dt.getSubtotalpedido()).sum();
+        pedido.setTotal(sumaTotal);
+        model.addAttribute("cart", detalles);
+        model.addAttribute("pedido", pedido);
+
+        return "usuario/carrito";
+    }
+
+    @GetMapping("/getCart")
+    public String getCart(Model model, HttpSession session) {
+
+        model.addAttribute("cart", detalles);
+        model.addAttribute("pedido", pedido);
+
+        //sesion
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
+        return "/usuario/carrito";
+    }
+
+    @GetMapping("/pedido")
+    public String order(Model model, HttpSession session) {
+
+        model.addAttribute("cart", detalles);
+        model.addAttribute("pedido", pedido);
+        return "usuario/resumenpedido";
     }
 }
