@@ -16,6 +16,8 @@ public class DetallePedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "nombre")
+    private String nombre;
     @ManyToOne
     @JoinColumn(name = "pedido_id", referencedColumnName = "idpedido")
     private Pedido pedido;
@@ -25,7 +27,7 @@ public class DetallePedido {
     @Column(name = "cantidadpedido")
     private Integer cantidadpedido;
     @Column(name = "precio_unitariopedido")
-    private BigDecimal precio_unitariopedido;
+    private Double precio_unitariopedido;
     @Column(name = "subtotalpedido")
-    private BigDecimal subtotalpedido;
+    private Double subtotalpedido;
 }
