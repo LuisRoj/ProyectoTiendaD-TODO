@@ -21,6 +21,11 @@ public class ProductoService implements IProductoService{
     }
 
     @Override
+    public List<Producto> findAll() {
+        return ProductosRepository.findAll();
+    }
+
+    @Override
     public Optional<Producto> get(Integer id) {
         return ProductosRepository.findById(id);
     }
