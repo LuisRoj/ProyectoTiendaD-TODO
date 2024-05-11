@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="layout::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="layout::menu"></nav>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <a href="#"> <img class="img-fluid rounded"
+                                  th:src="@{/images/{img} (img=${producto.imagenproducto})} " alt="">
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <form th:action="@{/cart}" method="POST">
+                    <input type="hidden" th:value="${producto.idproducto}" name="id">
+                    <h2 class="card-title" th:text="${producto.nomidproducto}"></h2>
+
+                    <ul class="list-group">
+                        <li class="list-group-item"><h5 th:text=" 'Precio: '+ ${producto.precioproducto} "></h5></li>
+                        <li class="list-group-item">
+                            <p th:text=" 'Descripción: '+ ${producto.descproducto} "></p>
+                        </li>
+                        <li class="list-group-item"><h6>
+                            Cantidad: <input type="number" id="cantidad" name="cantidad"
+                                             autocomplete="off" min="1" max="5" value="1">
+                        </h6></li>
+                    </ul>
+
+
+                    <button type="submit" class="btn btn-dark">Añadir al
+                        carrito</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
