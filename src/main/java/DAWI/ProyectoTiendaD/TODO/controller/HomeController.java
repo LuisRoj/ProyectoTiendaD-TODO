@@ -44,7 +44,10 @@ public class HomeController {
 
     Pedido pedido = new Pedido();
 
-
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/producto/listado";
+    }
 
     @GetMapping("productohome/{id}")
     public String productoHome(@PathVariable Integer id, Model model) {
