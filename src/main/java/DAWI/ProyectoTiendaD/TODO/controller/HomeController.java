@@ -4,6 +4,8 @@ import DAWI.ProyectoTiendaD.TODO.model.bd.DetallePedido;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Pedido;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Producto;
 import DAWI.ProyectoTiendaD.TODO.model.bd.Usuario;
+import DAWI.ProyectoTiendaD.TODO.service.IDetallePedidoService;
+import DAWI.ProyectoTiendaD.TODO.service.IPedidoService;
 import DAWI.ProyectoTiendaD.TODO.service.IProductoService;
 import DAWI.ProyectoTiendaD.TODO.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +32,12 @@ public class HomeController {
     private IProductoService productoService;
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private IPedidoService pedidoService;
+
+    @Autowired
+    private IDetallePedidoService detallePedidoService;
 
     List<DetallePedido> detalles=new ArrayList<DetallePedido>();
 
@@ -127,5 +136,30 @@ public class HomeController {
         model.addAttribute("pedido", pedido);
         model.addAttribute("usuario", usuario);
         return "usuario/resumenpedido";
+    }
+
+    @GetMapping("/savePedido")
+    public String savePedido() {
+        Date fechaCreacion = new Date();
+        pedido.setFechacreacion(fechaCreacion);
+        pedido.setNumero(pedidoService.generarNumeroPedido());
+
+        //usuario
+        Usuario usuario =usuarioService.findById(4).get();
+
+        pedido.setUsuario(usuario);
+        pedidoService.save(pedido);
+
+        //guardar detalles
+        for (DetallePedido dt:detalles) {
+            dt.setPedido(pedido);
+            detallePedidoService.save(dt);
+        }
+
+        ///limpiar lista y orden
+        pedido = new Pedido();
+        detalles.clear();
+
+        return "redirect:/producto/listado";
     }
 }
