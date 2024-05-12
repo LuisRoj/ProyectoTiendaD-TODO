@@ -34,4 +34,14 @@ public class ProductoService implements IProductoService{
     public Producto FindById(Integer id) {
         return ProductosRepository.findById(id).get();
     }
+
+    @Override
+    public void registrarProducto(Producto producto) {
+        ProductosRepository.save(producto);
+    }
+
+    @Override
+    public void eliminarProducto(Integer id) {
+        ProductosRepository.deleteById(id);
+    }
 }
