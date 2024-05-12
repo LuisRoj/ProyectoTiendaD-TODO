@@ -175,4 +175,15 @@ public class HomeController {
         model.addAttribute("listarproductos", productos);
         return "usuario/formproductos";
     }
+
+    @GetMapping("/pedidos")
+    public String obtenerPedidos(Model model, HttpSession session) {
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+        Usuario usuario= usuarioService.findById(  Integer.parseInt(session.getAttribute("idusuario").toString()) ).get();
+        List<Pedido> pedidos= pedidoService.findByUsuario(usuario);
+        model.addAttribute("pedidos", pedidos);
+        log.info("pedidos {}", pedidos);
+        return "usuario/pedidos";
+    }
 }

@@ -7,16 +7,14 @@
 <body>
 <nav th:replace="layout_usuario::menuUser"></nav>
 
-<!-- Page Content -->
 <div class="container">
-    <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Resumen de la orden</small>
+        Tienda D'TODO  <small>Resumen del pedido</small>
     </h1>
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Orden</li>
+        <li class="breadcrumb-item active">Pedido</li>
     </ol>
 
     <!-- Blog Post -->
@@ -26,7 +24,7 @@
                 <div class="col-lg-9">
                     <div class="card-body">
                         <h5 class="card-title">
-                            DATOS ORDEN
+                            DATOS DEL PEDIDO
                         </h5>
                         <h6 th:text=" 'Nombre: '+ ${usuario.nomusuario}"> </h6>
                         <h6 th:text="'Correo: '+  ${usuario.email}"></h6>
@@ -62,7 +60,7 @@
 
 
                 <div class="col-lg-3">
-                    <h2 class="card-title">Resumen Orden</h2>
+                    <h2 class="card-title">Resumen Pedido</h2>
 
                     <ul class="list-group">
                         <li class="list-group-item"><h5 th:text=" 'Total: '+ ${pedido.total} "> </h5></li>
