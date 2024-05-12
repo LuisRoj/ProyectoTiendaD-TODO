@@ -11,4 +11,6 @@ public interface IProductoService {
     Optional<Producto> get(Integer id);
 
     Producto FindById(Integer id);
+    void registrarProducto(Producto producto);
+    void eliminarProducto(Integer id);
 }
