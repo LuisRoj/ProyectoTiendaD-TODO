@@ -61,6 +61,7 @@ public class LoginController {
         String email = usuario.getEmail();
         // Aquí puedes obtener todos los demás campos de Usuario
         session.setAttribute("usuario", email);
+        session.setAttribute("idusuario", usuario.getIdusuario());
         model.addAttribute("listarproductos", IProductoService.listarProductos());
 
         // Obteniendo el idrol del usuario

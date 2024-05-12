@@ -45,7 +45,8 @@ public class HomeController {
     Pedido pedido = new Pedido();
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model, HttpSession session) {
+        log.info("Sesion del usuario: {}", session.getAttribute("idusuario"));
         return "redirect:/producto/listado";
     }
 
@@ -135,7 +136,7 @@ public class HomeController {
     @GetMapping("/pedido")
     public String order(Model model, HttpSession session) {
 
-        Usuario usuario =usuarioService.findById(4).get();
+        Usuario usuario =usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         model.addAttribute("cart", detalles);
         model.addAttribute("pedido", pedido);
         model.addAttribute("usuario", usuario);
@@ -143,13 +144,13 @@ public class HomeController {
     }
 
     @GetMapping("/savePedido")
-    public String savePedido() {
+    public String savePedido(HttpSession session) {
         Date fechaCreacion = new Date();
         pedido.setFechacreacion(fechaCreacion);
         pedido.setNumero(pedidoService.generarNumeroPedido());
 
         //usuario
-        Usuario usuario =usuarioService.findById(4).get();
+        Usuario usuario =usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 
         pedido.setUsuario(usuario);
         pedidoService.save(pedido);
@@ -173,5 +174,16 @@ public class HomeController {
         List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNomidproducto().contains(nombre)).collect(Collectors.toList());
         model.addAttribute("listarproductos", productos);
         return "usuario/formproductos";
+    }
+
+    @GetMapping("/pedidos")
+    public String obtenerPedidos(Model model, HttpSession session) {
+        model.addAttribute("sesion", session.getAttribute("idusuario"));
+
+        Usuario usuario= usuarioService.findById(  Integer.parseInt(session.getAttribute("idusuario").toString()) ).get();
+        List<Pedido> pedidos= pedidoService.findByUsuario(usuario);
+        model.addAttribute("pedidos", pedidos);
+        log.info("pedidos {}", pedidos);
+        return "usuario/pedidos";
     }
 }
