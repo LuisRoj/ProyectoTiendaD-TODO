@@ -134,7 +134,7 @@ public class HomeController {
     }
 
     @GetMapping("/pedido")
-    public String order(Model model, HttpSession session) {
+    public String pedido(Model model, HttpSession session) {
 
         Usuario usuario =usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         model.addAttribute("cart", detalles);
