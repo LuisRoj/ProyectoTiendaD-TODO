@@ -26,15 +26,18 @@ public class SecurityConfig {
                         auth ->
                                 auth.requestMatchers("/carrito/principal").hasRole("SUPERADMIN")
                                         .requestMatchers("/auth/login",
+                                                "/producto/listado",
+                                                "productohome/{id}",
                                                 "/auth/registrar",
                                                 "/auth/guardarUsuario",
                                                 "/resources/**",
                                                 "/static/**",
+                                                "/images/**",
                                                 "/styles/**",
-                                                "/scripts/**")
+                                                "/scripts/**",
+                                                "/")
                                         .permitAll()
-                                        .anyRequest()
-                                        .authenticated()
+                                        .anyRequest().authenticated()
 
 
                 ).formLogin(
